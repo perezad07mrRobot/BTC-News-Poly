@@ -1,0 +1,53 @@
+# BTC-News-Poly bot configuration
+# All values can be overridden via CLI flags.
+
+signal:
+  # Weights applied to component scores (each in [-1, +1]) before logistic squash.
+  weights:
+    ta: 0.55
+    sentiment: 0.30
+    fear_greed: 0.15
+  # Logistic gain — higher = more confident probabilities for the same raw score.
+  logit_gain: 2.5
+  # Treat extreme F&G values as contrarian (true) or trend-following (false).
+  fg_contrarian: true
+
+technical:
+  # Binance kline interval and lookback (hours) for indicator computation.
+  interval: "1h"
+  lookback_hours: 168    # 7 days
+  rsi_period: 14
+  ema_short: 20
+  ema_long: 50
+  bb_period: 20
+  bb_std: 2.0
+  atr_period: 14
+
+news:
+  cryptopanic:
+    filter: "rising"           # hot|rising|bullish|bearish|important|saved|lol
+    currencies: "BTC"
+    posts_limit: 50
+  rss_feeds:
+    - "https://www.coindesk.com/arc/outboundfeeds/rss/"
+    - "https://www.theblock.co/rss.xml"
+    - "https://bitcoinmagazine.com/feed"
+  max_age_hours: 24
+
+risk:
+  per_trade_max_usdc: 25.0
+  daily_loss_limit_usdc: 50.0
+  min_edge: 0.05               # 5pp model-vs-market gap required to trade
+  max_open_positions: 3
+  kelly_fraction: 0.25         # fraction of full Kelly to size with
+  state_dir: "state"
+  kill_switch_file: "state/STOP"
+
+polymarket:
+  host: "https://clob.polymarket.com"
+  gamma_host: "https://gamma-api.polymarket.com"
+  chain_id: 137
+  # When placing limit orders, offset price by this much past mid for a better fill price.
+  price_offset_from_mid: 0.01
+  # Tick size on Polymarket CLOB (cents).
+  tick_size: 0.01
